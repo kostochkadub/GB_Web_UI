@@ -1,4 +1,4 @@
-package homeWork1;
+package homework.geekbrains;
 
 public class Treadmill {
     protected int length;
