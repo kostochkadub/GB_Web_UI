@@ -1,9 +1,18 @@
 package ru.geekbrains.main.site.at;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //        Перейти на сайт https://geekbrains.ru/career
 //        Нажать на кнопку Форум
@@ -16,47 +25,36 @@ import org.openqa.selenium.WebElement;
 
 public class NavigationTest extends BaseSettingsTest {
 
-    @Test
-    public void checkEvents() {
-        WebElement eventsButton = driver.findElement(By.cssSelector("aside nav [href=\"/events\"]"));
-        eventsButton.click();
 
-        WebElement eventsTitlePage = driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]"));
-        Assertions.assertEquals("Вебинары", eventsTitlePage.getText());
+    @ParameterizedTest
+    @MethodSource("dataProvider")
+    public void checkTop(String expected, String cssSelectorText) {
+
+        driver.findElement(By.cssSelector(cssSelectorText)).click();
+
+        Assertions.assertEquals(
+                expected,
+                driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]")).getText()
+        );
     }
 
-    @Test
-    public void checkContentPagesTopics() {
-        //        href="/topics"
-        driver.findElement(By.cssSelector("aside nav [href=\"/topics\"]")).click();
-        String textTopics = driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]")).getText();
-        Assertions.assertEquals("Форум", textTopics);
+    public static Stream<Arguments> dataProvider(){
+        return Stream.of(
+                Arguments.of("Вебинары","aside nav [href=\"/events\"]"),
+                Arguments.of("Форум","aside nav [href=\"/topics\"]"),
+                Arguments.of("Блог","aside nav [href=\"/posts\"]"),
+                Arguments.of("Тесты","aside nav [href=\"/tests\"]"),
+                Arguments.of("Карьера","aside nav [href=\"/career\"]")
+        );
     }
-    @Test
-    public void checkContentPagesPosts() {
-        //        href="/posts"
-        driver.findElement(By.cssSelector("aside nav [href=\"/posts\"]")).click();
-        String textPosts = driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]")).getText();
-        Assertions.assertEquals("Блог", textPosts);
-    }
-    @Test
-    public void checkContentPagesTests() {
-        //        href="/tests"
 
-//        driver.findElement(By.cssSelector("[class=\"gb-empopup-close\"]")).click();
-//        driver.findElement(By.cssSelector("button>[class=\"svg-icon icon-popup-close-button \"]")).click();
+    @AfterEach
+    void headerAndFooter(){
+        WebElement header =  driver.findElement(By.cssSelector("[class*=\"gb-header__content\"]"));
+        WebElement footer =  driver.findElement(By.cssSelector("[class=\"site-footer\"]"));
 
-        driver.findElement(By.cssSelector("aside nav [href=\"/tests\"]")).click();
-        String textTest = driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]")).getText();
-        Assertions.assertEquals("Тесты", textTest);
-    }
-    @Test
-    public void checkContentPagesCareer() {
-//        href="/career"
-        driver.findElement(By.cssSelector("aside nav [href=\"/career\"]")).click();
-        String textCareer = driver.findElement(By.cssSelector("h2[class=\"gb-header__title\"]")).getText();
-        Assertions.assertEquals("Карьера", textCareer);
-
+        wait30second.until(ExpectedConditions.visibilityOf(header));
+        wait30second.until(ExpectedConditions.visibilityOf(footer));
     }
 
 }

@@ -1,9 +1,15 @@
 package ru.geekbrains.main.site.at;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Перейти на сайт https://geekbrains.ru/courses
 //        Нажать на кнопку Поиск
@@ -21,7 +27,6 @@ public class SearchTest extends BaseSettingsTest {
 
     @Test
     public void searchTextJava() {
-        driver.manage().window().fullscreen();
         WebElement buttonSearch = driver.findElement(By.cssSelector("a>[class=\"svg-icon icon-search \"]"));
         buttonSearch.click();
 
@@ -46,27 +51,33 @@ public class SearchTest extends BaseSettingsTest {
 
         String numberProf = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"professions\"] span")).getText();
         int x = Integer.parseInt(numberProf);
-        assert (x>=2);
+        MatcherAssert.assertThat(x, Matchers.greaterThanOrEqualTo(2));
+        //Assertions.assertTrue(x>=2);
 
         String numberCourse = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"courses\"] span")).getText();
         x = Integer.parseInt(numberCourse);
-        assert (x>15);
+        MatcherAssert.assertThat(x, Matchers.greaterThan(15));
+        //Assertions.assertTrue (x>15);
 
         String numberWebinars = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"webinars\"] span")).getText();
         x = Integer.parseInt(numberWebinars);
-        assert (x>180 && x<300);
+        MatcherAssert.assertThat(x, Matchers.allOf(Matchers.greaterThan(180), Matchers.lessThan(300)));
+        //Assertions.assertTrue(x>180 && x<300);
 
         String numberBlogs = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"blogs\"] span")).getText();
         x = Integer.parseInt(numberBlogs);
-        assert (x>300);
+        MatcherAssert.assertThat(x, Matchers.greaterThan(300));
+        //Assertions.assertTrue (x>300);
 
         String numberForums = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"forums\"] span")).getText();
         x = Integer.parseInt(numberForums);
-        assert (x!=350);
+        MatcherAssert.assertThat(x, Matchers.not(15));
+        //Assertions.assertTrue (x!=350);
 
         String numberTests = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"tests\"] span")).getText();
         x = Integer.parseInt(numberTests);
-        assert (x>0);
+        MatcherAssert.assertThat(x, Matchers.greaterThan(0));
+        //Assertions.assertTrue (x>0);
 
         WebElement firstJavaJunior = driver.findElement(By.xpath("//header//h2[text()=\"Вебинары\"]/../../../div[2]/div/div[1]//a[text()=\"Java Junior. Что нужно знать для успешного собеседования?\"]"));
         wait30second.until(ExpectedConditions.visibilityOf(firstJavaJunior));
