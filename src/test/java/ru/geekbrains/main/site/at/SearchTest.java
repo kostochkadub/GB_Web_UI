@@ -1,14 +1,18 @@
 package ru.geekbrains.main.site.at;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import ru.geekbrains.main.site.at.BaseSettingsTest.BaseSettingsTest;
+import ru.geekbrains.main.site.at.block.SearchTestBlock;
+import ru.geekbrains.main.site.at.page.AuthorizationPage;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Перейти на сайт https://geekbrains.ru/courses
@@ -27,6 +31,13 @@ public class SearchTest extends BaseSettingsTest {
 
     @Test
     public void searchTextJava() {
+        driver.get("https://geekbrains.ru/login");
+
+        driver.manage().window().maximize();
+
+        new AuthorizationPage(driver)
+                .singIn("hks47018@eoopy.com","hks47018");
+
         WebElement buttonSearch = driver.findElement(By.cssSelector("a>[class=\"svg-icon icon-search \"]"));
         buttonSearch.click();
 
@@ -49,41 +60,14 @@ public class SearchTest extends BaseSettingsTest {
         wait30second.until(ExpectedConditions.visibilityOf(textTests));
         wait30second.until(ExpectedConditions.visibilityOf(textProject));
 
-        String numberProf = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"professions\"] span")).getText();
-        int x = Integer.parseInt(numberProf);
-        MatcherAssert.assertThat(x, Matchers.greaterThanOrEqualTo(2));
-        //Assertions.assertTrue(x>=2);
-
-        String numberCourse = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"courses\"] span")).getText();
-        x = Integer.parseInt(numberCourse);
-        MatcherAssert.assertThat(x, Matchers.greaterThan(15));
-        //Assertions.assertTrue (x>15);
-
-        String numberWebinars = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"webinars\"] span")).getText();
-        x = Integer.parseInt(numberWebinars);
-        MatcherAssert.assertThat(x, Matchers.allOf(Matchers.greaterThan(180), Matchers.lessThan(300)));
-        //Assertions.assertTrue(x>180 && x<300);
-
-        String numberBlogs = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"blogs\"] span")).getText();
-        x = Integer.parseInt(numberBlogs);
-        MatcherAssert.assertThat(x, Matchers.greaterThan(300));
-        //Assertions.assertTrue (x>300);
-
-        String numberForums = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"forums\"] span")).getText();
-        x = Integer.parseInt(numberForums);
-        MatcherAssert.assertThat(x, Matchers.not(15));
-        //Assertions.assertTrue (x!=350);
-
-        String numberTests = driver.findElement(By.cssSelector("[class=\"search-page-tabs\"] [data-tab=\"tests\"] span")).getText();
-        x = Integer.parseInt(numberTests);
-        MatcherAssert.assertThat(x, Matchers.greaterThan(0));
-        //Assertions.assertTrue (x>0);
-
-        WebElement firstJavaJunior = driver.findElement(By.xpath("//header//h2[text()=\"Вебинары\"]/../../../div[2]/div/div[1]//a[text()=\"Java Junior. Что нужно знать для успешного собеседования?\"]"));
-        wait30second.until(ExpectedConditions.visibilityOf(firstJavaJunior));
-
-        WebElement textGeekBrains = driver.findElement(By.xpath("//div[@class=\"company-item-wrapper\"]//a[text()=\"Образовательный портал GeekBrains\"]"));
-        wait30second.until(ExpectedConditions.visibilityOf(textGeekBrains));
+        PageFactory.initElements(driver, SearchTestBlock.class)
+                .checkFirstJavaJuniorAndTextGeekBrains()
+                .checkCount("Профессии", greaterThanOrEqualTo(2))
+                .checkCount("Курсы", greaterThan(15))
+                .checkCount("Вебинары", allOf(greaterThan(180), lessThan(300)))
+                .checkCount("Блоги", greaterThan(300))
+                .checkCount("Форумы", not(350))
+                .checkCount("Тесты", not(0));
 
         /*Профессий не менее чем 2
         Курсов более 15
