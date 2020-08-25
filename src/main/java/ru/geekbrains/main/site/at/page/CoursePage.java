@@ -1,6 +1,6 @@
 package ru.geekbrains.main.site.at.page;
 
-import org.junit.jupiter.api.Assertions;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,11 +29,14 @@ public class CoursePage extends BasePage {
         super(driver);
     }
 
-    public CoursePage setFilterForHomework(){
+    @Step("Поставить фильтры Бесплатные и Тестирование")
+    public CoursePage setFilterFreeAndTest(){
         getFreeCheckBox().click();
         getTestCheckBox().click();
         return this;
     }
+
+    @Step("Проверка, что обображается Тестирование ПО. Уровень 1 и Тестирование ПО. Уровень 2")
     public CoursePage checkTabsInCourse(){
         ExpectedConditions.visibilityOf(coursesTabLevel1);
         ExpectedConditions.visibilityOf(coursesTabLevel2);

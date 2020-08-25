@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 import ru.geekbrains.main.site.at.BaseSettingsTest.BaseSettingsTest;
 import ru.geekbrains.main.site.at.page.AuthorizationPage;
 
-public class CoursesTest extends BaseSettingsTest {
+public class CoursesWebTest extends BaseSettingsTest {
     @Test
     void testCourse() {
         driver.get("https://geekbrains.ru/login");
@@ -16,7 +16,7 @@ public class CoursesTest extends BaseSettingsTest {
                 .checkPageName("Главная")
                 .getNavigationBlock().clickButton("Курсы")
                 .clickButton("Курсы")
-                .setFilterForHomework()
+                .setFilterFreeAndTest()
                 .checkTabsInCourse();
 
         /*Реализовать тест:

@@ -1,5 +1,6 @@
 package ru.geekbrains.main.site.at.page;
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,6 +27,7 @@ public class ContentPage extends BasePage {
         this.navigationBlock = new NavigationBlock(driver);
     }
 
+    @Step("Проверка, что имя равно: {expectedNamePage}")
     public ContentPage checkPageName(String expectedNamePage) {
         WebElement namePage = headerBlock.getNamePage();
         webDriverWait.until(ExpectedConditions.textToBePresentInElement(namePage, expectedNamePage));

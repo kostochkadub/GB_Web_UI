@@ -5,7 +5,7 @@ import ru.geekbrains.main.site.at.BaseSettingsTest.BaseSettingsTest;
 import ru.geekbrains.main.site.at.page.AuthorizationPage;
 import ru.geekbrains.main.site.at.page.ContentPage;
 
-public class AuthorizationTest extends BaseSettingsTest {
+public class AuthorizationWebTest extends BaseSettingsTest {
     @Test
     void name() {
         driver.get("https://geekbrains.ru/login");

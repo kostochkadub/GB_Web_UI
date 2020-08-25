@@ -1,5 +1,6 @@
 package ru.geekbrains.main.site.at.block;
 
+import io.qameta.allure.Step;
 import org.hamcrest.Matcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -40,12 +41,14 @@ public class SearchTestBlock extends BasePage {
         super(driver);
     }
 
+    @Step("Проверка задания из 5-ого урока")
     public SearchTestBlock checkFirstJavaJuniorAndTextGeekBrains() {
         ExpectedConditions.visibilityOf(firstJavaJunior);
         ExpectedConditions.visibilityOf(textGeekBrains);
         return this;
     }
 
+    @Step("Проверка кол-ва {tabName}")
     public SearchTestBlock checkCount(String tabName, Matcher<Integer> matcher) {
         String actualCount = getTab(tabName).findElement(By.cssSelector("span")).getText();
         assertThat(Integer.parseInt(actualCount), matcher);

@@ -1,5 +1,6 @@
 package ru.geekbrains.main.site.at.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +20,7 @@ public class AuthorizationPage extends BasePage {
         super(driver);
     }
 
+    @Step("авторизация с логин {login} и пароль {password}")
     public ContentPage singIn(String login, String password) {
         inputLogin.sendKeys(login);
         inputPassword.sendKeys(password);

@@ -1,7 +1,5 @@
 package ru.geekbrains.main.site.at;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,8 +10,6 @@ import ru.geekbrains.main.site.at.block.SearchTestBlock;
 import ru.geekbrains.main.site.at.page.AuthorizationPage;
 
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Перейти на сайт https://geekbrains.ru/courses
 //        Нажать на кнопку Поиск
@@ -27,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //        Тесты
 //        Проекты и компании
 
-public class SearchTest extends BaseSettingsTest {
+public class SearchWebTest extends BaseSettingsTest {
 
     @Test
     public void searchTextJava() {

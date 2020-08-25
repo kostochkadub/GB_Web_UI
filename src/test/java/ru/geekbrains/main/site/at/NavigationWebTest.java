@@ -1,20 +1,20 @@
 package ru.geekbrains.main.site.at;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import ru.geekbrains.main.site.at.BaseSettingsTest.BaseSettingsTest;
-import ru.geekbrains.main.site.at.block.NavigationBlock;
 
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //        Перейти на сайт https://geekbrains.ru/career
 //        Нажать на кнопку Форум
@@ -25,9 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //        Тесты
 //        Карьера
 
-public class NavigationTest extends BaseSettingsTest {
-
-    NavigationBlock navigationBlock = PageFactory.initElements(driver,NavigationBlock.class);
+@Epic("Web UI тесты")
+@Feature("Навигация")
+@Story("Переход по навигации")
+@DisplayName("Навигация")
+public class NavigationWebTest extends BaseSettingsTest {
 
     @ParameterizedTest
     @MethodSource("dataProvider")

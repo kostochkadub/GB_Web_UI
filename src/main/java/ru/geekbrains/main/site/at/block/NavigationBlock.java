@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import ru.geekbrains.main.site.at.BasePage;
-import ru.geekbrains.main.site.at.page.CoursePage;
+import ru.geekbrains.main.site.at.utils.ButtonNotFoundException;
 
 public class NavigationBlock extends BasePage {
 
@@ -65,7 +65,7 @@ public class NavigationBlock extends BasePage {
                 break;
             }
             default:{
-                throw new RuntimeException("Кнопки: "+nameButton+" нет на странице!");
+                throw new ButtonNotFoundException("Кнопки: "+nameButton+" нет на странице!");
             }
         }
         return PageFactory.initElements(driver, CourseHeaderBlock.class);
