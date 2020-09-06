@@ -5,15 +5,25 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import ru.geekbrains.main.site.at.BasePage;
+import ru.geekbrains.main.site.at.block.CourseHeaderBlock;
 
-public class CoursePage extends BasePage {
+import java.util.List;
+
+public class CoursePage extends BaseContentPage {
+
+    private CourseHeaderBlock courseHeaderBlock;
 
     @FindBy(css = "[class*=\"nav \"] [href=\"#cour-new\"]")
     private WebElement coursesInCourses;
 
+    @FindBy(xpath = "//form/ul//label")
+    private List<WebElement> filterList;
+
     @FindBy(css = "#filter-0")
     private WebElement freeCheckBox;
+
+    @FindBy(xpath = "//a/div/div/span")
+    private List<WebElement> courseList;
 
     @FindBy(css = "#filter-9")
     private WebElement testCheckBox;
@@ -27,41 +37,29 @@ public class CoursePage extends BasePage {
 
     public CoursePage(WebDriver driver) {
         super(driver);
+        this.courseHeaderBlock = new CourseHeaderBlock(driver);
     }
 
-    @Step("Поставить фильтры Бесплатные и Тестирование")
-    public CoursePage setFilterFreeAndTest(){
-        getFreeCheckBox().click();
-        getTestCheckBox().click();
+    @Step("Настройка фильтра курсов: '{args}'")
+    public CoursePage configFilter(String... args) {
+        for (String test : args) {
+            WebElement element = findElement(filterList, test);
+            element.click();
+        }
         return this;
     }
 
-    @Step("Проверка, что обображается Тестирование ПО. Уровень 1 и Тестирование ПО. Уровень 2")
-    public CoursePage checkTabsInCourse(){
-        ExpectedConditions.visibilityOf(coursesTabLevel1);
-        ExpectedConditions.visibilityOf(coursesTabLevel2);
+    @Step("Проверка отображения курсов: '{args}'")
+    public CoursePage checkingDisplayedCourses(String... args) {
+        for (String test : args) {
+            WebElement element = findElement(courseList, test);
+            webDriverWait.until(ExpectedConditions.visibilityOf(element));
+        }
         return this;
     }
 
-
-
-    public WebElement getCoursesInCourses() {
-        return coursesInCourses;
+    public CourseHeaderBlock getCourseHeaderBlock() {
+        return courseHeaderBlock;
     }
 
-    public WebElement getFreeCheckBox() {
-        return freeCheckBox;
-    }
-
-    public WebElement getTestCheckBox() {
-        return testCheckBox;
-    }
-
-    public WebElement getCoursesTabLevel2() {
-        return coursesTabLevel2;
-    }
-
-    public WebElement getCoursesTabLevel1() {
-        return coursesTabLevel1;
-    }
 }

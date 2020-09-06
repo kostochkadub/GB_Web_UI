@@ -49,29 +49,47 @@ public class SearchTestBlock extends BasePage {
     }
 
     @Step("Проверка кол-ва {tabName}")
-    public SearchTestBlock checkCount(String tabName, Matcher<Integer> matcher) {
-        String actualCount = getTab(tabName).findElement(By.cssSelector("span")).getText();
+    public SearchTestBlock checkCount(NameSearchButton nameSearchButton, Matcher<Integer> matcher) {
+        String actualCount = getTab(nameSearchButton).findElement(By.cssSelector("span")).getText();
         assertThat(Integer.parseInt(actualCount), matcher);
         return this;
     }
 
-
-    private WebElement getTab(String tabName) {
-        switch (tabName) {
-            case "Профессии":
+    private WebElement getTab(NameSearchButton nameSearchButton) {
+        switch (nameSearchButton) {
+            case PROFESSION:
                 return tabProf;
-            case "Курсы":
+            case COURSES:
                 return tabCourse;
-            case "Вебинары":
+            case WEBINARS:
                 return tabWebinars;
-            case "Блоги":
+            case BLOG:
                 return tabBlogs;
-            case "Форумы":
+            case FORUM:
                 return tabForums;
-            case "Тесты":
+            case TESTS:
                 return tabTests;
             default:
-                throw new RuntimeException("Элемента: " + tabName + " нет на странице!");
+                throw new RuntimeException("Элемента: " + nameSearchButton + " нет на странице!");
+        }
+    }
+
+    public enum NameSearchButton {
+        PROFESSION("Главная"),
+        COURSES("Курсы"),
+        WEBINARS("Вебинары"),
+        FORUM("Форум"),
+        BLOG("Блог"),
+        TESTS("Тесты");
+
+        NameSearchButton(String text) {
+            this.text = text;
+        }
+
+        private String text;
+
+        public String getText() {
+            return text;
         }
     }
 

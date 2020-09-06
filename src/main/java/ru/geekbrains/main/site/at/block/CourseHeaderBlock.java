@@ -4,14 +4,10 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import ru.geekbrains.main.site.at.BasePage;
 import ru.geekbrains.main.site.at.page.CoursePage;
 
-public class CourseHeaderBlock {
-
-    public CourseHeaderBlock(WebDriver driver) {
-        this.driver = driver;
-    }
+public class CourseHeaderBlock extends BasePage {
 
     @FindBy(css = "#prof-link")
     private WebElement buttonProfessions;
@@ -19,37 +15,55 @@ public class CourseHeaderBlock {
     @FindBy(css = "#free-link")
     private WebElement buttonFreeIntensive;
 
-    @FindBy(css = "#cour-link")
+    @FindBy(css = "[class*='nav nav-tabs'] [id='cour-link']")
     private WebElement buttonCourses;
 
     @FindBy(css = "[class*=\"nav nav-tabs\"] [href*=\"https://forbusiness.geekbrains\"]")
     private WebElement buttonCompanies;
 
+    public CourseHeaderBlock(WebDriver driver) {
+        super(driver);
+    }
 
-    private WebDriver driver;
-
-    public CoursePage clickButton(String nameButton) {
+    public CoursePage clickButton(NameButton nameButton) {
         switch (nameButton) {
-            case "Профессии": {
-                buttonProfessions.click();
+            case PROFESSIONS: {
+                this.buttonProfessions.click();
                 break;
             }
-            case "Бесплатные интенсивы": {
-                buttonFreeIntensive.click();
+            case FREEINTENSIVE:{
+                this.buttonFreeIntensive.click();
                 break;
             }
-            case "Курсы": {
-                buttonCourses.click();
+            case COURSES: {
+                this.buttonCourses.click();
                 break;
             }
-            case "Компаниям": {
-                buttonCompanies.click();
+            case COMPANIES:{
+                this.buttonCompanies.click();
                 break;
             }
             default: {
                 throw new NotFoundException("Не найдена кнопка с именем: " + nameButton);
             }
         }
-        return PageFactory.initElements(driver, CoursePage.class);
+        return new CoursePage(driver);
+    }
+
+    public enum NameButton {
+        PROFESSIONS("Профессии"),
+        FREEINTENSIVE("Бесплатные интенсивы"),
+        COURSES("Курсы"),
+        COMPANIES("Компаниям");
+
+        NameButton(String text) {
+            this.text = text;
+        }
+
+        private String text;
+
+        public String getText() {
+            return text;
+        }
     }
 }

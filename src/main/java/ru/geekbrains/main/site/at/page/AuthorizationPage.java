@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.geekbrains.main.site.at.BasePage;
 
-public class AuthorizationPage extends BasePage {
+public class AuthorizationPage extends BasePage implements IOpenURL {
     @FindBy(css = "#user_email")
     private WebElement inputLogin;
 
@@ -21,22 +21,16 @@ public class AuthorizationPage extends BasePage {
     }
 
     @Step("авторизация с логин {login} и пароль {password}")
-    public ContentPage singIn(String login, String password) {
+    public BaseContentPage singIn(String login, String password) {
         inputLogin.sendKeys(login);
         inputPassword.sendKeys(password);
         buttonSingIn.click();
-        return new ContentPage(driver);
+        return new BaseContentPage(driver);
     }
 
-    public WebElement getInputLogin() {
-        return inputLogin;
-    }
-
-    public WebElement getInputPassword() {
-        return inputPassword;
-    }
-
-    public WebElement getButtonSingIn() {
-        return buttonSingIn;
+    @Override
+    public AuthorizationPage openURL() {
+        openPageInBrowser("https://geekbrains.ru/login");
+        return this;
     }
 }
